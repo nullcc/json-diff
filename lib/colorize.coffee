@@ -8,15 +8,20 @@ Theme =
   '-': color.red
 
 
-subcolorizeToCallback = (key, diff, output, color, indent) ->
+subcolorizeToCallback = (key, diff, output, color, indent, mark) ->
   prefix    = if key then "#{key}: " else ''
+  mark = if mark then mark else ''
   subindent = indent + '  '
 
   switch extendedTypeOf(diff)
     when 'object'
-      if ('__old' of diff) and ('__new' of diff) and (Object.keys(diff).length is 2)
-        subcolorizeToCallback(key, diff.__old, output, '-', indent)
-        subcolorizeToCallback(key, diff.__new, output, '+', indent)
+      if ('__old' of diff) and ('__new' of diff)
+        if (Object.keys(diff).length is 2)
+          subcolorizeToCallback(key, diff.__old, output, '-', indent)
+          subcolorizeToCallback(key, diff.__new, output, '+', indent)
+        else if (Object.keys(diff).length is 3 and '__old' of diff is true)
+          subcolorizeToCallback(key, diff.__old, output, '-', indent, 't')
+          subcolorizeToCallback(key, diff.__new, output, '+', indent, 't')
       else
         output color, "#{indent}#{prefix}{"
         for own subkey, subvalue of diff
@@ -53,7 +58,10 @@ subcolorizeToCallback = (key, diff, output, color, indent) ->
 
     else
       if diff == 0 or diff == null or diff == false or diff
-        output(color, indent + prefix + JSON.stringify(diff))
+        postfix = ''
+        if mark.length > 0
+          postfix = '/' + mark
+        output(color, postfix + indent + prefix + JSON.stringify(diff))
 
 
 

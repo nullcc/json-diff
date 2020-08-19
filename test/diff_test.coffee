@@ -123,8 +123,8 @@ describe 'diff({keysOnly: true})', ->
     it "should return { <key>: <diff> } with a recursive diff when second object is missing a key and two objects with different values for a key", ->
       assert.deepEqual { bar: { bbboz__deleted: 11 } }, diff({ foo: 42, bar: { bbbar: 10, bbboz: 11 }}, { foo: 42, bar: { bbbar: 12 }}, {keysOnly: true})
 
-    it "should return { __old: <old value>, __new: <new value> } object for two objects with different value type for a key ", ->
-      assert.deepEqual { foo: { __old: 1, __new: '1' } }, diff({foo: 1}, {foo:'1'}, {keysOnly: true, typeSensitive: true})
+    it "should return { __old: <old value>, __new: <new value>, __typeChange: true' } object for two objects with different value types for a key", ->
+      assert.deepEqual { foo: { __old: 1, __new: '1', __typeChange: true } }, diff({foo: 1}, {foo:'1'}, {keysOnly: true, typeSensitive: true})
 
   describe 'with arrays of scalars', ->
 
@@ -181,3 +181,9 @@ describe 'diffString', ->
 
   it "return an empty string when no diff found", ->
     assert.equal diffString(a, a), ''
+
+  it "should produce the expected result with type change for the example JSON files", ->
+    assert.equal diffString({foo: 1}, {foo:'1'}, color: no, {keysOnly: true, typeSensitive: true}), readExampleFile('result-type-change.jsdiff')
+
+  it "should produce the expected colored result with type change for the example JSON files", ->
+    assert.equal diffString({foo: 1}, {foo:'1'}, {}, {keysOnly: true, typeSensitive: true}), readExampleFile('result-type-change-colored.jsdiff')
