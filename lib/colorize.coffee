@@ -12,6 +12,7 @@ subcolorizeToCallback = (key, diff, output, color, indent, mark) ->
   prefix    = if key then "#{key}: " else ''
   mark = if mark then mark else ''
   subindent = indent + '  '
+  tag = if mark.length > 0 then '/' + mark else ''
 
   switch extendedTypeOf(diff)
     when 'object'
@@ -23,7 +24,7 @@ subcolorizeToCallback = (key, diff, output, color, indent, mark) ->
           subcolorizeToCallback(key, diff.__old, output, '-', indent, 't')
           subcolorizeToCallback(key, diff.__new, output, '+', indent, 't')
       else
-        output color, "#{indent}#{prefix}{"
+        output color, tag + "#{indent}#{prefix}{"
         for own subkey, subvalue of diff
           if m = subkey.match /^(.*)__deleted$/
             subcolorizeToCallback(m[1], subvalue, output, '-', subindent)
@@ -31,10 +32,10 @@ subcolorizeToCallback = (key, diff, output, color, indent, mark) ->
             subcolorizeToCallback(m[1], subvalue, output, '+', subindent)
           else
             subcolorizeToCallback(subkey, subvalue, output, color, subindent)
-        output color, "#{indent}}"
+        output color, tag + "#{indent}}"
 
     when 'array'
-      output color, "#{indent}#{prefix}["
+      output color, tag + "#{indent}#{prefix}["
 
       looksLikeDiff = yes
       for item in diff
@@ -58,7 +59,6 @@ subcolorizeToCallback = (key, diff, output, color, indent, mark) ->
 
     else
       if diff == 0 or diff == null or diff == false or diff
-        tag = if mark.length > 0 then '/' + mark else ''
         output(color, tag + indent + prefix + JSON.stringify(diff))
 
 

@@ -173,6 +173,22 @@ describe 'diffString', ->
   a = JSON.parse(readExampleFile('a.json'))
   b = JSON.parse(readExampleFile('b.json'))
 
+  obj1 = {
+    foo: 1,
+    bar: {
+      baz: true
+      foobar: 1
+    },
+  }
+  obj2 = {
+    foo: '1',
+    bar: {
+      baz: {
+      },
+      foobar: []
+    }
+  }
+
   it "should produce the expected result for the example JSON files", ->
     assert.equal diffString(a, b, color: no), readExampleFile('result.jsdiff')
 
@@ -183,7 +199,7 @@ describe 'diffString', ->
     assert.equal diffString(a, a), ''
 
   it "should produce the expected result with type change for the example JSON files", ->
-    assert.equal diffString({foo: 1}, {foo:'1'}, color: no, {keysOnly: true, typeSensitive: true}), readExampleFile('result-type-change.jsdiff')
+    assert.equal diffString(obj1, obj2, color: no, {keysOnly: true, typeSensitive: true}), readExampleFile('result-type-change.jsdiff')
 
   it "should produce the expected colored result with type change for the example JSON files", ->
-    assert.equal diffString({foo: 1}, {foo:'1'}, {}, {keysOnly: true, typeSensitive: true}), readExampleFile('result-type-change-colored.jsdiff')
+    assert.equal diffString(obj1, obj2, {}, {keysOnly: true, typeSensitive: true}), readExampleFile('result-type-change-colored.jsdiff')

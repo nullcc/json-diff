@@ -1,4 +1,12 @@
  {
 [31m-/t  foo: 1[39m
 [32m+/t  foo: "1"[39m
+   bar: {
+[31m-/t    baz: true[39m
+[32m+/t    baz: {[39m
+[32m+/t    }[39m
+[31m-/t    foobar: 1[39m
+[32m+/t    foobar: [[39m
+[32m+    ][39m
+   }
  }

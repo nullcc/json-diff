@@ -1,4 +1,12 @@
  {
 -/t  foo: 1
 +/t  foo: "1"
+   bar: {
+-/t    baz: true
++/t    baz: {
++/t    }
+-/t    foobar: 1
++/t    foobar: [
++    ]
+   }
  }
