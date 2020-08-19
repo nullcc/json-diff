@@ -34,10 +34,10 @@ describe 'diff', ->
     it "should return { <key>__added: <new value> } when the first object is missing a key", ->
       assert.deepEqual { foo__added: 42 }, diff({ bar: 10 }, { foo: 42, bar: 10 })
 
-    it "should return { <key>: { __old: <old value>, __new: <new value> } } for two objects with diffent scalar values for a key", ->
+    it "should return { <key>: { __old: <old value>, __new: <new value> } } for two objects with different scalar values for a key", ->
       assert.deepEqual { foo: { __old: 42, __new: 10 } }, diff({ foo: 42 }, { foo: 10 })
 
-    it "should return { <key>: <diff> } with a recursive diff for two objects with diffent values for a key", ->
+    it "should return { <key>: <diff> } with a recursive diff for two objects with different values for a key", ->
       assert.deepEqual { bar: { bbboz__deleted: 11, bbbar: { __old: 10, __new: 12 } } }, diff({ foo: 42, bar: { bbbar: 10, bbboz: 11 }}, { foo: 42, bar: { bbbar: 12 }})
 
   describe 'with arrays of scalars', ->
@@ -114,14 +114,17 @@ describe 'diff({keysOnly: true})', ->
     it "should return { <key>__added: <new value> } when the first object is missing a key", ->
       assert.deepEqual { foo__added: 42 }, diff({ bar: 10 }, { foo: 42, bar: 10 }, {keysOnly: true})
 
-    it "should return undefined for two objects with diffent scalar values for a key", ->
+    it "should return undefined for two objects with different scalar values for a key", ->
       assert.deepEqual undefined, diff({ foo: 42 }, { foo: 10 }, {keysOnly: true})
 
-    it "should return undefined with a recursive diff for two objects with diffent values for a key", ->
+    it "should return undefined with a recursive diff for two objects with different values for a key", ->
       assert.deepEqual undefined, diff({ foo: 42, bar: { bbbar: 10 }}, { foo: 42, bar: { bbbar: 12 }}, {keysOnly: true})
 
-    it "should return { <key>: <diff> } with a recursive diff when second object is missing a key and two objects with diffent values for a key", ->
+    it "should return { <key>: <diff> } with a recursive diff when second object is missing a key and two objects with different values for a key", ->
       assert.deepEqual { bar: { bbboz__deleted: 11 } }, diff({ foo: 42, bar: { bbbar: 10, bbboz: 11 }}, { foo: 42, bar: { bbbar: 12 }}, {keysOnly: true})
+
+    it "should return { __old: <old value>, __new: <new value> } object for two objects with different value type for a key ", ->
+      assert.deepEqual { foo: { __old: 1, __new: '1' } }, diff({foo: 1}, {foo:'1'}, {keysOnly: true, typeSensitive: true})
 
   describe 'with arrays of scalars', ->
 

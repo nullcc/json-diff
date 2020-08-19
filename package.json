@@ -14,7 +14,7 @@
   "bin": "bin/json-diff.js",
   "scripts": {
     "prepare": "coffee -c lib",
-    "test": "mocha test/*.coffee",
+    "test": "npm run prepare && mocha test/*.coffee",
     "cov": "rm -rf lib-cov; jscoverage lib lib-cov; env JSLIB=lib-cov mocha -R dot && env JSLIB=lib-cov mocha -R html-cov >coverage.html; open coverage.html"
   },
   "dependencies": {

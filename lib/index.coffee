@@ -149,6 +149,9 @@ diffWithScore = (obj1, obj2, options = {}) ->
   type1 = extendedTypeOf obj1
   type2 = extendedTypeOf obj2
 
+  if options.keysOnly && type1 != type2 && options.typeSensitive
+    return [0, { __old: obj1, __new: obj2 }]
+
   if type1 == type2
     switch type1
       when 'object'

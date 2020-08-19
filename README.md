@@ -43,6 +43,7 @@ Detailed:
       -C, --[no-]color      Colored output
       -j, --raw-json        Display raw JSON encoding of the diff
       -k, --keys-only       Compare only the keys, ignore the differences in values
+      -t, --type-sensitive  Compare value types for a key, only take effect when keysOnly is true
       -h, --help            Display this usage information
 
 In javascript (ES5):
