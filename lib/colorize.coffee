@@ -58,10 +58,8 @@ subcolorizeToCallback = (key, diff, output, color, indent, mark) ->
 
     else
       if diff == 0 or diff == null or diff == false or diff
-        postfix = ''
-        if mark.length > 0
-          postfix = '/' + mark
-        output(color, postfix + indent + prefix + JSON.stringify(diff))
+        tag = if mark.length > 0 then '/' + mark else ''
+        output(color, tag + indent + prefix + JSON.stringify(diff))
 
 
 
