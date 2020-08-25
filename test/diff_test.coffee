@@ -126,6 +126,9 @@ describe 'diff({keysOnly: true})', ->
     it "should return { __old: <old value>, __new: <new value>, __typeChange: true' } object for two objects with different value types for a key", ->
       assert.deepEqual { foo: { __old: 1, __new: '1', __typeChange: true } }, diff({foo: 1}, {foo:'1'}, {keysOnly: true, typeSensitive: true})
 
+    it "should return { __old: <old value>, __new: <new value>, __typeChange: true' } object for two objects with different number types (int and float) for a key", ->
+      assert.deepEqual { foo: { __old: 1, __new: 1.1, __typeChange: true } }, diff({foo: 1}, {foo:1.1}, {keysOnly: true, typeSensitive: true})
+
   describe 'with arrays of scalars', ->
 
     it "should return undefined for two arrays with identical contents", ->

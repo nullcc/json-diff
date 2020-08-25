@@ -1,5 +1,5 @@
 { SequenceMatcher } = require 'difflib'
-{ extendedTypeOf } = require './util'
+{ extendedTypeOf, isIntNumber } = require './util'
 { colorize } = require './colorize'
 
 isScalar = (obj) -> (typeof obj isnt 'object' || obj == null)
@@ -151,6 +151,11 @@ diffWithScore = (obj1, obj2, options = {}) ->
 
   if options.keysOnly and type1 != type2 and options.typeSensitive
     return [0, { __old: obj1, __new: obj2, __typeChange: true }]
+
+  # when obj1 and obj2 are numbers, comment type change if one is an int and another is a float
+  if options.keysOnly and type1 == 'number' and type2 == 'number' and options.typeSensitive
+    if isIntNumber(obj1) != isIntNumber(obj2)
+      return [0, { __old: obj1, __new: obj2, __typeChange: true }]
 
   if type1 == type2
     switch type1

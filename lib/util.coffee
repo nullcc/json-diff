@@ -8,4 +8,7 @@ extendedTypeOf = (obj) ->
   else
     result
 
-module.exports = { extendedTypeOf }
+isIntNumber = (number) ->
+  ~~number == number
+
+module.exports = { extendedTypeOf, isIntNumber }
